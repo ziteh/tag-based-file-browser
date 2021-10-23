@@ -18,7 +18,6 @@ app.post('/', tagController.add)
 
 app.get('/', (req, res) => {
   res.render('index', {
-    tagsTree: 'tagsTree',
     page: 'hello'
   })
 })
