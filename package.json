@@ -1,13 +1,21 @@
 {
-  "name": "nodejs_test",
-  "version": "1.0.0",
-  "description": "",
+  "name": "tag-based-file-browser",
+  "version": "0.1.0-alpha",
+  "description": "A tag-based file browser, anything is taggable.",
+  "license": "MIT License",
   "main": "index.js",
+  "author": {
+    "name": "ZiTe",
+    "email": "honmonoh@gmail.com",
+    "url": "https://github.com/ziteh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ziteh/tag-based-file-browser"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "ejs": "^3.1.6",
     "express": "^4.17.1",
