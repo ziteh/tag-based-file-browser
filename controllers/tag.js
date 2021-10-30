@@ -49,20 +49,79 @@ const tagController = {
     })
   },
 
+  getChildTags: (req, res) => {
+    const id = req.params.id
+    tagModel.getChildTags(id, (err, results) => {
+      if (err) return console.log(err);
+      res.send(results);
+    })
+  },
+
   getTree: (req, res) => {
-    var allTags;
+    var test = [
+      {
+        name: "a1",
+        child: [
+          { name: "aa1", child: [] },
+          {
+            name: "aa2", child: [
+              { name: "aaa1" }
+            ]
+          }
+        ]
+      },
+      {
+        name: "a2",
+        child: [
+          { name: "bb1", child: [] }
+        ]
+      },
+      {
+        name: "a3",
+        child: []
+      }
+    ];
+
+    var allTags = [];
+
+    const render = (tags) => {
+      res.render('tagsTree', {
+        items: tags
+      });
+    }
+
+    const getChild = (id, cb) => {
+      tagModel.getChildTags(id, (err, results) => {
+        if (err) return console.log(err);
+        cb(results);
+      });
+    };
+
+    const parseTags = (tags, cb) => {
+      tags.forEach(tag => {
+        console.log(`Tag Name: ${tag.name}`);
+        getChild(tag.id, (childTags) => {
+          if (childTags.length) {
+            console.log(`Name:${tag.name},Length: ${childTags.length}`)
+            parseTags(childTags,(pTags)=>{
+              tag.child = [];
+              tag.child.push(pTags);
+            })
+          }
+        });
+        cb(tag);
+      });
+    };
 
     tagModel.getAll((err, results) => {
       if (err) return console.log(err);
-      allTags = results;
+      var parsedTags = [];
+      parseTags(results, (pTags) => {
+        parsedTags.push(pTags);
+      });
+      render(parsedTags);
     });
-    const parser = (tag) => {
 
-    };
-    tagModel.haveChild(100, (err, results) => {
-      if (err) return console.log(err);
-      res.render('treeview',{items: allTags});
-    });
   }
 }
 

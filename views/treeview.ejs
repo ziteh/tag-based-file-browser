@@ -7,7 +7,9 @@
   <% items.forEach(function(item){ %>
     <li>
       <%= item.name %>
-      <%- include('treeview', {items: item.child}); %>
+      <% if (item.child) { %>
+        <%- include('treeview', {items: item.child}); %>
+      <% } %>
     </li>
   <% }) %>
 

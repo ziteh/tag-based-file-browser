@@ -22,6 +22,7 @@ app.get('/', (req, res) => {
   })
 })
 
+app.get('/child/:id',tagController.getChildTags)
 app.get('/tree',tagController.getTree)
 app.get('/tags', tagController.getAll)
 app.get('/tags/:id', tagController.get)
