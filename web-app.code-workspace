@@ -4,12 +4,30 @@
 			"path": "."
 		}
   ],
-  "settings": {},
+  "settings": {
+    "stm32-for-vscode.openOCDPath": false,
+    "stm32-for-vscode.makePath": false,
+    "stm32-for-vscode.armToolchainPath": false
+  },
   "extensions": {
     "recommendations": [
       "hansuxdev.bootstrap5-snippets",
       "anbuselvanrocky.bootstrap5-vscode",
       "ritwickdey.liveserver"
+    ]
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "pwa-node",
+        "request": "launch",
+        "name": "Launch Program",
+        "skipFiles": [
+          "<node_internals>/**"
+        ],
+        "program": "${workspaceFolder}\\index.js"
+      }
     ]
   }
 }
