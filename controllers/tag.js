@@ -1,13 +1,12 @@
 const { getChildFiles } = require('../models/tag');
 const tagModel = require('../models/tag')
+const asyncTagModel = require('../models/asyncTag');
 
 const tagController = {
-  getAll: (req, res) => {
-    tagModel.getAll((err, results) => {
-      if (err) return console.log(err);
-      res.render('tags', {
-        tags: results
-      })
+  getAll: async (req, res) => {
+    const results = await asyncTagModel.getAll();
+    res.render('tags', {
+      tags: results
     })
   },
 
