@@ -1,13 +1,16 @@
-const { getChildFiles } = require('../models/tag');
 const tagModel = require('../models/tag')
 const asyncTagModel = require('../models/asyncTag');
 
 const tagController = {
   getAll: async (req, res) => {
-    const results = await asyncTagModel.getAll();
-    res.render('tags', {
-      tags: results
-    })
+    try {
+      const results = await asyncTagModel.getAll();
+      res.render('tags', {
+        tags: results
+      })
+    } catch (error) {
+      console.log(error);
+    }
   },
 
   get: (req, res) => {
@@ -56,71 +59,40 @@ const tagController = {
     })
   },
 
-  getTree: (req, res) => {
-    var test = [
-      {
-        name: "a1",
-        child: [
-          { name: "aa1", child: [] },
-          {
-            name: "aa2", child: [
-              { name: "aaa1" }
-            ]
+  getTree: async (req, res) => {
+    const parseTags = (unparsedTags) => new Promise((resolve, reject) => {
+      console.log("start");
+      let parsedTags = [];
+
+      unparsedTags.forEach(async tag => {
+        tag.child = [];
+        const childTags = await asyncTagModel.getChildTags(tag.id);
+        console.log(`N:${tag.name},I:${tag.id},C:${childTags.length}`);
+        if (childTags.length) {
+          try {
+            tag.child = await parseTags(childTags);
+          } catch (error) {
+            reject(error);
+            return;
           }
-        ]
-      },
-      {
-        name: "a2",
-        child: [
-          { name: "bb1", child: [] }
-        ]
-      },
-      {
-        name: "a3",
-        child: []
-      }
-    ];
-
-    var allTags = [];
-
-    const render = (tags) => {
-      res.render('tagsTree', {
-        items: tags
+        }
+        parsedTags.push(tag);
       });
-    }
 
-    const getChild = (id, cb) => {
-      tagModel.getChildTags(id, (err, results) => {
-        if (err) return console.log(err);
-        cb(results);
-      });
-    };
-
-    const parseTags = (tags, cb) => {
-      tags.forEach(tag => {
-        console.log(`Tag Name: ${tag.name}`);
-        getChild(tag.id, (childTags) => {
-          if (childTags.length) {
-            console.log(`Name:${tag.name},Length: ${childTags.length}`)
-            parseTags(childTags,(pTags)=>{
-              tag.child = [];
-              tag.child.push(pTags);
-            })
-          }
-        });
-        cb(tag);
-      });
-    };
-
-    tagModel.getAll((err, results) => {
-      if (err) return console.log(err);
-      var parsedTags = [];
-      parseTags(results, (pTags) => {
-        parsedTags.push(pTags);
-      });
-      render(parsedTags);
+      console.log("done");
+      resolve(parsedTags);
     });
 
+    try {
+      const allTags = await asyncTagModel.getAll();
+      const parsedTags = await parseTags(allTags);
+
+      res.render('tagsTree', {
+        items: parsedTags
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
 
