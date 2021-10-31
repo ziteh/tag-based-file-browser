@@ -37,7 +37,7 @@ const get = (id) => new Promise((resolve, reject) => {
  */
 const getChildTags = (id) => new Promise((resolve, reject) => {
   const options =
-    'SELECT * FROM tags INNER JOIN tag_relation ON tag_relation.child_tag_id = tags.id WHERE tag_relation.parent_tag_id = ?';
+    'SELECT t.*, tr.parent_tag_id FROM tags AS t JOIN tag_relation AS tr ON tr.child_tag_id = t.id WHERE tr.parent_tag_id = ?';
   db.query(
     options, [id], (error, results) => {
       if (error) {
