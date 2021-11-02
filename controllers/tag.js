@@ -61,13 +61,12 @@ const tagController = {
 
   getTree: async (req, res) => {
     const parseTags = (unparsedTags) => new Promise((resolve, reject) => {
-      console.log("start");
       let parsedTags = [];
+      let i = 1;
 
       unparsedTags.forEach(async tag => {
         tag.child = [];
         const childTags = await asyncTagModel.getChildTags(tag.id);
-        console.log(`N:${tag.name},I:${tag.id},C:${childTags.length}`);
         if (childTags.length) {
           try {
             tag.child = await parseTags(childTags);
@@ -76,16 +75,22 @@ const tagController = {
             return;
           }
         }
-        parsedTags.push(tag);
-      });
 
-      console.log("done");
-      resolve(parsedTags);
+        parsedTags.push(tag);
+
+        if (unparsedTags.length == i) {
+          resolve(parsedTags);
+        }
+        
+        i++;
+      });
     });
 
     try {
       const allTags = await asyncTagModel.getAll();
+      console.log(`Get all:${allTags.length}`);
       const parsedTags = await parseTags(allTags);
+      console.log(`DONE ${parsedTags.length}`);
 
       res.render('tagsTree', {
         items: parsedTags
