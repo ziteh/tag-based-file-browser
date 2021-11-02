@@ -88,10 +88,7 @@ const tagController = {
 
     try {
       const allTags = await asyncTagModel.getAll();
-      console.log(`Get all:${allTags.length}`);
       const parsedTags = await parseTags(allTags);
-      console.log(`DONE ${parsedTags.length}`);
-
       res.render('tagsTree', {
         items: parsedTags
       });
