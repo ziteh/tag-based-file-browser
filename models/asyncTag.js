@@ -53,6 +53,23 @@ const getChildTags = (id) => new Promise((resolve, reject) => {
  * @param {number} id 
  * @returns {Promise<any[]>}
  */
+ const getParentTags = (id) => new Promise((resolve, reject) => {
+  const options =
+    'SELECT t.*, tr.child_tag_id FROM tags AS t JOIN tag_relation AS tr ON tr.parent_tag_id = t.id WHERE tr.child_tag_id = ?';
+  db.query(
+    options, [id], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(results);
+    }
+  )
+});
+/**
+ * @param {number} id 
+ * @returns {Promise<any[]>}
+ */
 const getChildFiles = (id) => new Promise((resolve, reject) => {
   const options =
     'SELECT * FROM files INNER JOIN file_relation ON file_relation.child_file_id = files.id WHERE file_relation.parent_tag_id = ?';
@@ -68,7 +85,7 @@ const getChildFiles = (id) => new Promise((resolve, reject) => {
 });
 
 const tagModel = {
-  getAll, get, getChildTags, getChildFiles,
+  getAll, get, getChildTags, getParentTags, getChildFiles,
 }
 
 module.exports = tagModel
