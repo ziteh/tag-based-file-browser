@@ -66,14 +66,14 @@ const tagController = {
 
       unparsedTags.forEach(async tag => {
         tag.child = [];
-        const childTags = await asyncTagModel.getChildTags(tag.id);
-        if (childTags.length) {
-          try {
+        try {
+          const childTags = await asyncTagModel.getChildTags(tag.id);
+          if (childTags.length) {
             tag.child = await parseTags(childTags);
-          } catch (error) {
-            reject(error);
-            return;
           }
+        } catch (error) {
+          reject(error);
+          return;
         }
 
         parsedTags.push(tag);
@@ -81,7 +81,6 @@ const tagController = {
         if (unparsedTags.length == i) {
           resolve(parsedTags);
         }
-        
         i++;
       });
     });
