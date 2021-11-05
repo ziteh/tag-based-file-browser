@@ -14,18 +14,27 @@
 
 <p>Child Tags</p>
 <ul>
-  <% for(let i=0; i < childTags.length; i++) { %>
+  <% childTags.forEach(function(childTag){ %>
     <li>
-      <%= childTags[i].name %>
+      <%= childTag.name %>
     </li>
-    <% } %>
+  <% }) %>
 </ul>
 
 <p>Child Files</p>
 <ul>
-  <% for(let i=0; i < childFiles.length; i++) { %>
+  <% childFiles.forEach(function(childFile){ %>
     <li>
-      <%= childFiles[i].name %>
+      <%= childFile.name %>
     </li>
-    <% } %>
+  <% }) %>
+</ul>
+
+<p>Child Folders</p>
+<ul>
+  <% childFolders.forEach(function(childFolder){ %>
+    <li>
+      <%= childFolder.name %>
+    </li>
+  <% }) %>
 </ul>
