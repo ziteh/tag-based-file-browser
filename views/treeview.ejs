@@ -6,7 +6,10 @@
 
   <% items.forEach(function(item){ %>
     <li>
-      <%= item.name %>
+      <a href="/tags/<%= item.id %>">
+        <%= item.name %>
+      </a>
+
       <% if (item.child) { %>
         <%- include('treeview', {items: item.child}); %>
       <% } %>
