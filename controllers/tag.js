@@ -13,35 +13,25 @@ const tagController = {
     }
   },
 
-  get: (req, res) => {
+  get: async (req, res) => {
     const id = req.params.id
-    var allTags
-    var thisTag
-    var childTags
-    var childFiles
-    tagModel.getAll((err, results) => {
-      if (err) return console.log(err);
-      allTags = results
-    });
-    tagModel.get(id, (err, results) => {
-      if (err) return console.log(err);
-      thisTag = results[0]
-    });
-    tagModel.getChildTags(id, (err, results) => {
-      if (err) return console.log(err);
-      childTags = results
-    });
-    tagModel.getChildFiles(id, (err, results) => {
-      if (err) return console.log(err);
-      childFiles = results
+    try {
+      const allTags = await asyncTagModel.getAll();
+      const tag = await asyncTagModel.get(id);
+      const childTags = await asyncTagModel.getChildTags(id);
+      const childFiles = await asyncTagModel.getChildFiles(id);
+      const childFolders = await asyncTagModel.getChildFolders(id);
 
       res.render('tag', {
-        tag: thisTag,
+        tag,
         childTags,
         childFiles,
+        childFolders,
         allTags
-      })
-    });
+      });
+    } catch (error) {
+      console.log(error);
+    }
   },
 
   add: (req, res) => {
