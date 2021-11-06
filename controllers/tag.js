@@ -1,7 +1,48 @@
 const tagModel = require('../models/tag')
 const asyncTagModel = require('../models/asyncTag');
 
+const parseTags = (unparsedTags) => new Promise((resolve, reject) => {
+  let parsedTags = [];
+  let i = 1;
+
+  unparsedTags.forEach(async tag => {
+    tag.child = [];
+    try {
+      const childTags = await asyncTagModel.getChildTags(tag.id);
+      if (childTags.length) {
+        tag.child = await parseTags(childTags);
+      }
+    } catch (error) {
+      reject(error);
+      return;
+    }
+
+    parsedTags.push(tag);
+
+    if (unparsedTags.length == i) {
+      resolve(parsedTags);
+    }
+    i++;
+  });
+});
+
 const tagController = {
+  index: async (req, res) => {
+    const allTags = await asyncTagModel.getAll();
+    const parsedTags = await parseTags(allTags);
+    const childTags = await asyncTagModel.getChildTags(1);
+    const childFiles = await asyncTagModel.getChildFiles(1);
+    const childFolders = await asyncTagModel.getChildFolders(1);
+
+    res.render('index', {
+      page: 'hello',
+      tags: parsedTags,
+      childTags,
+      childFiles,
+      childFolders
+    });
+  },
+
   getAll: async (req, res) => {
     try {
       const results = await asyncTagModel.getAll();
@@ -50,31 +91,6 @@ const tagController = {
   },
 
   getTree: async (req, res) => {
-    const parseTags = (unparsedTags) => new Promise((resolve, reject) => {
-      let parsedTags = [];
-      let i = 1;
-
-      unparsedTags.forEach(async tag => {
-        tag.child = [];
-        try {
-          const childTags = await asyncTagModel.getChildTags(tag.id);
-          if (childTags.length) {
-            tag.child = await parseTags(childTags);
-          }
-        } catch (error) {
-          reject(error);
-          return;
-        }
-
-        parsedTags.push(tag);
-
-        if (unparsedTags.length == i) {
-          resolve(parsedTags);
-        }
-        i++;
-      });
-    });
-
     try {
       const allTags = await asyncTagModel.getAll();
       const parsedTags = await parseTags(allTags);
@@ -87,31 +103,6 @@ const tagController = {
   },
 
   addTags: async (req, res) => {
-    const parseTags = (unparsedTags) => new Promise((resolve, reject) => {
-      let parsedTags = [];
-      let i = 1;
-
-      unparsedTags.forEach(async tag => {
-        tag.child = [];
-        try {
-          const childTags = await asyncTagModel.getChildTags(tag.id);
-          if (childTags.length) {
-            tag.child = await parseTags(childTags);
-          }
-        } catch (error) {
-          reject(error);
-          return;
-        }
-
-        parsedTags.push(tag);
-
-        if (unparsedTags.length == i) {
-          resolve(parsedTags);
-        }
-        i++;
-      });
-    });
-
     try {
       const id = req.params.id;
       const allTags = await asyncTagModel.getAll();

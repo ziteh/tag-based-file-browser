@@ -1,0 +1,27 @@
+
+<p>Child Tags</p>
+<ul>
+  <% childTags.forEach(function(childTag){ %>
+    <li>
+      <%= childTag.name %>
+    </li>
+  <% }) %>
+</ul>
+
+<p>Child Files</p>
+<ul>
+  <% childFiles.forEach(function(childFile){ %>
+    <li>
+      <%= childFile.name %>
+    </li>
+  <% }) %>
+</ul>
+
+<p>Child Folders</p>
+<ul>
+  <% childFolders.forEach(function(childFolder){ %>
+    <li>
+      <%= childFolder.name %>
+    </li>
+  <% }) %>
+</ul>

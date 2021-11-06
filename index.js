@@ -17,12 +17,7 @@ app.set('view engine', 'ejs');
 app.post('/', tagController.add);
 app.post('/addTagRes', tagController.addTagsRes);
 
-app.get('/', (req, res) => {
-  res.render('index', {
-    page: 'hello'
-  })
-});
-
+app.get('/', tagController.index);
 app.get('/addTag/:id', tagController.addTags);
 app.get('/child/:id', tagController.getChildTags);
 app.get('/tree', tagController.getTree);

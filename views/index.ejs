@@ -18,6 +18,12 @@
   </header>
 
   <main>
+    <div style="width: 25%;">
+      <%- include('sidebar', { items: tags }); %>
+    </div>
+    <div style="width: auto;">
+      <%- include('item', {childTags, childFiles, childFolders}); %>
+    </div>
     <%- include(page) %>
   </main>
 
