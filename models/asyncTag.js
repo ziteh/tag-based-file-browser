@@ -125,6 +125,17 @@ const tagModel = {
         }
       )
     }),
+
+  addTagRelation: (parentId, childId) => new Promise((resolve, reject) => {
+    const options = 'INSERT INTO `tag_relation` (`id`, `parent_tag_id`, `child_tag_id`) VALUES (NULL, ?, ?)';
+    db.query(options, [parentId, childId], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(results);
+    })
+  })
 }
 
 module.exports = tagModel
