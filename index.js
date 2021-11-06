@@ -4,30 +4,32 @@
 const port = 5002;
 const express = require('express');
 const app = express();
-const db = require('./db')
-const tagController = require('./controllers/tag')
+const db = require('./db');
+const tagController = require('./controllers/tag');
 
 // Middleware
-app.use(express.urlencoded({ extender: true }))
+app.use(express.urlencoded({ extender: true }));
 
-app.use(express.static('public'))
+app.use(express.static('public'));
 
-app.set('view engine', 'ejs')
+app.set('view engine', 'ejs');
 
-app.post('/', tagController.add)
+app.post('/', tagController.add);
+app.post('/addTagRes', tagController.addTagsRes);
 
 app.get('/', (req, res) => {
   res.render('index', {
     page: 'hello'
   })
-})
+});
 
-app.get('/child/:id',tagController.getChildTags)
-app.get('/tree',tagController.getTree)
-app.get('/tags', tagController.getAll)
-app.get('/tags/:id', tagController.get)
+app.get('/addTag/:id', tagController.addTags);
+app.get('/child/:id', tagController.getChildTags);
+app.get('/tree', tagController.getTree);
+app.get('/tags', tagController.getAll);
+app.get('/tags/:id', tagController.get);
 
 app.listen(port, () => {
   db.connect()
   console.log(`Example app listening at http://localhost:${port}`)
-})
+});

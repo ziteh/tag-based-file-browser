@@ -84,6 +84,55 @@ const tagController = {
     } catch (error) {
       console.log(error);
     }
+  },
+
+  addTags: async (req, res) => {
+    const parseTags = (unparsedTags) => new Promise((resolve, reject) => {
+      let parsedTags = [];
+      let i = 1;
+
+      unparsedTags.forEach(async tag => {
+        tag.child = [];
+        try {
+          const childTags = await asyncTagModel.getChildTags(tag.id);
+          if (childTags.length) {
+            tag.child = await parseTags(childTags);
+          }
+        } catch (error) {
+          reject(error);
+          return;
+        }
+
+        parsedTags.push(tag);
+
+        if (unparsedTags.length == i) {
+          resolve(parsedTags);
+        }
+        i++;
+      });
+    });
+
+    try {
+      const id = req.params.id;
+      const allTags = await asyncTagModel.getAll();
+      const parsedTags = await parseTags(allTags);
+      res.render('addTags', {
+        items: parsedTags,
+        id
+      })
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  addTagsRes: async (req, res) => {
+    const id = req.body.id;
+    const selectedId = req.body.tag;
+
+    selectedId.forEach(async childTag => {
+      await asyncTagModel.addTagRelation(id, childTag);
+    });
+    res.redirect(`/addTag/${id}`);
   }
 }
 

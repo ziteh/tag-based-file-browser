@@ -1,0 +1,7 @@
+addTags
+
+<form action="/addTagRes" method="post">
+  <%- include('treeviewWithCheckbox', {items}); %>
+  <input type="hidden" name="id" value="<%= id %> "/>
+  <button>送出</button>
+</form>
