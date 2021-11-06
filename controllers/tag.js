@@ -1,23 +1,25 @@
 const tagModel = require('../models/tag')
 const asyncTagModel = require('../models/asyncTag');
 
-const parseTags = (unparsedTags) => new Promise((resolve, reject) => {
+const parseTags = (unparsedTags, isRoot = true) => new Promise((resolve, reject) => {
   let parsedTags = [];
   let i = 1;
 
   unparsedTags.forEach(async tag => {
     tag.child = [];
     try {
-      const childTags = await asyncTagModel.getChildTags(tag.id);
-      if (childTags.length) {
-        tag.child = await parseTags(childTags);
+      const parentTags = await asyncTagModel.getParentTags(tag.id);
+      if (!parentTags.length || !isRoot) {
+        const childTags = await asyncTagModel.getChildTags(tag.id);
+        if (childTags.length) {
+          tag.child = await parseTags(childTags, false);
+        }
+        parsedTags.push(tag);
       }
     } catch (error) {
       reject(error);
       return;
     }
-
-    parsedTags.push(tag);
 
     if (unparsedTags.length == i) {
       resolve(parsedTags);
