@@ -34,6 +34,7 @@ const tagController = {
     res.render('index', {
       page: 'empty',
       tags: parsedTags,
+      id: undefined,
       childTags: undefined,
       childFiles: undefined,
       childFolders: undefined
