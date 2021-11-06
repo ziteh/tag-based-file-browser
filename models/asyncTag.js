@@ -135,7 +135,30 @@ const tagModel = {
       }
       resolve(results);
     })
-  })
+  }),
+
+  addFileRelation: (parentId, childId) => new Promise((resolve, reject) => {
+    const options = 'INSERT INTO `file_relation` (`id`, `parent_tag_id`, `child_file_id`) VALUES (NULL, ?, ?)';
+    db.query(options, [parentId, childId], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(results);
+    })
+  }),
+
+  addFolderRelation: (parentId, childId) => new Promise((resolve, reject) => {
+    const options = 'INSERT INTO `folder_relation` (`id`, `parent_tag_id`, `child_folder_id`) VALUES (NULL, ?, ?)';
+    db.query(options, [parentId, childId], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(results);
+    })
+  }),
+
 }
 
 module.exports = tagModel

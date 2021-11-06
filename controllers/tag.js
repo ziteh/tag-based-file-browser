@@ -59,10 +59,11 @@ const tagController = {
       const childTags = await asyncTagModel.getChildTags(id);
       const childFiles = await asyncTagModel.getChildFiles(id);
       const childFolders = await asyncTagModel.getChildFolders(id);
-  
+
       res.render('index', {
         page: 'item',
         tags: parsedTags,
+        id,
         childTags,
         childFiles,
         childFolders
@@ -115,12 +116,31 @@ const tagController = {
 
   addTagsRes: async (req, res) => {
     const id = req.body.id;
-    const selectedId = req.body.tag;
+    const thisId = req.body.thisTagId[0] || [];
+    let parentTagIds = Array.from(req.body.parentTagIds || []);
+    const parentFileIds = Array.from(req.body.parentFileIds || []);
+    const parentFolderIds = Array.from(req.body.parentFolderIds || []);
+    const childTagIds = Array.from(req.body.childTagIds || []);
 
-    selectedId.forEach(async childTag => {
-      await asyncTagModel.addTagRelation(id, childTag);
+    if (thisId.length) {
+      parentTagIds.push(thisId);
+    }
+
+    console.log(childTagIds);
+
+    childTagIds.forEach(async childTagId => {
+      parentTagIds.forEach(async parentTagId => {
+        await asyncTagModel.addTagRelation(parentTagId, childTagId);
+      });
+      parentFileIds.forEach(async parentFileId => {
+        await asyncTagModel.addFileRelation(parentFileId, childTagId);
+      });
+      parentFolderIds.forEach(async parentFolderId => {
+        await asyncTagModel.addFolderRelation(parentFolderId, childTagId);
+      });
     });
-    res.redirect(`/addTag/${id}`);
+
+    res.redirect(`/tags/${id}`);
   }
 }
 

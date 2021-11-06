@@ -1,27 +1,41 @@
+<form action="/addTagRes" method="post">
 
-<p>Child Tags</p>
-<ul>
-  <% childTags.forEach(function(childTag){ %>
-    <li>
-      <%= childTag.name %>
-    </li>
-  <% }) %>
-</ul>
+  <input type="checkbox" name="thisTagId" value="<%= id %>" />Self<br />
 
-<p>Child Files</p>
-<ul>
-  <% childFiles.forEach(function(childFile){ %>
-    <li>
-      <%= childFile.name %>
-    </li>
-  <% }) %>
-</ul>
+  <p>Child Tags</p>
+  <ul>
+    <% childTags.forEach(function(childTag){ %>
+      <li>
+        <input type="checkbox" name="parentTagIds" value="<%= childTag.id %>" />
+        <%= childTag.name %>
+      </li>
+      <% }) %>
+  </ul>
 
-<p>Child Folders</p>
-<ul>
-  <% childFolders.forEach(function(childFolder){ %>
-    <li>
-      <%= childFolder.name %>
-    </li>
-  <% }) %>
-</ul>
+  <p>Child Files</p>
+  <ul>
+    <% childFiles.forEach(function(childFile){ %>
+      <li>
+        <input type="checkbox" name="parentFileIds" value="<%= childFile.id %>" />
+        <%= childFile.name %>
+      </li>
+      <% }) %>
+  </ul>
+
+  <p>Child Folders</p>
+  <ul>
+    <% childFolders.forEach(function(childFolder){ %>
+      <li>
+        <input type="checkbox" name="parentFolderIds" value="<%= childFolder.id %>" />
+        <%= childFolder.name %>
+      </li>
+      <% }) %>
+  </ul>
+
+  <hr />
+
+  <%- include('treeviewWithCheckbox', {items: tags}); %>
+
+    <input type="hidden" name="id" value="<%= id %> " />
+    <button>送出</button>
+</form>
