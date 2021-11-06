@@ -103,6 +103,28 @@ const tagModel = {
       }
     )
   }),
+
+  createTag: (name,
+    type = 1,
+    alias = null,
+    remark = null,
+    thumbnallPath = null,
+    fontColor = null,
+    backColor = null) => new Promise((resolve, reject) => {
+      const options = 'INSERT INTO `tags` (`id`, `name`, `type`, `alias`, `remark`, `thumbnail_path`, `font_color`, `back_color`) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?)';
+      const params = [name, type, alias, remark, thumbnallPath, fontColor, backColor];
+      db.query(
+        options,
+        params,
+        (error, results) => {
+          if (error) {
+            reject(error);
+            return;
+          }
+          resolve(results);
+        }
+      )
+    }),
 }
 
 module.exports = tagModel
