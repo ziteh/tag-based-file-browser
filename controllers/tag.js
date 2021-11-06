@@ -30,16 +30,13 @@ const tagController = {
   index: async (req, res) => {
     const allTags = await asyncTagModel.getAll();
     const parsedTags = await parseTags(allTags);
-    const childTags = await asyncTagModel.getChildTags(1);
-    const childFiles = await asyncTagModel.getChildFiles(1);
-    const childFolders = await asyncTagModel.getChildFolders(1);
 
     res.render('index', {
-      page: 'hello',
+      page: 'empty',
       tags: parsedTags,
-      childTags,
-      childFiles,
-      childFolders
+      childTags: undefined,
+      childFiles: undefined,
+      childFolders: undefined
     });
   },
 
@@ -58,17 +55,17 @@ const tagController = {
     const id = req.params.id
     try {
       const allTags = await asyncTagModel.getAll();
-      const tag = await asyncTagModel.get(id);
+      const parsedTags = await parseTags(allTags);
       const childTags = await asyncTagModel.getChildTags(id);
       const childFiles = await asyncTagModel.getChildFiles(id);
       const childFolders = await asyncTagModel.getChildFolders(id);
-
-      res.render('tag', {
-        tag,
+  
+      res.render('index', {
+        page: 'item',
+        tags: parsedTags,
         childTags,
         childFiles,
-        childFolders,
-        allTags
+        childFolders
       });
     } catch (error) {
       console.log(error);
