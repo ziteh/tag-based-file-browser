@@ -12,7 +12,7 @@ const config = require('./config') || null;
 app.use(express.urlencoded({ extender: true }));
 
 app.use(express.static('public'));
-app.use('/filesystem',express.static('//192.168.15.100/NormalData'));
+app.use('/filesystem',express.static(config.path));
 
 app.set('view engine', 'ejs');
 

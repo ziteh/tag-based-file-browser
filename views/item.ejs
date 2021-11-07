@@ -17,7 +17,9 @@
     <% childFiles.forEach(function(childFile){ %>
       <li>
         <input type="checkbox" name="parentFileIds" value="<%= childFile.id %>" />
+        <a href="<%= childFile.path %>">
         <%= childFile.name %>
+        </a>
       </li>
       <% }) %>
   </ul>
