@@ -121,19 +121,21 @@ const tagController = {
 
   addTagsRes: async (req, res) => {
     const id = req.body.id;
-    const thisId = req.body.thisTagId || [];
 
-    let childhTagIds = Array.of(req.body.childTagIds);
-    const childFileIds = Array.of(req.body.childFileIds);
-    const childFolderIds = Array.of(req.body.childFolderIds);
-    const parentTagIds = Array.of(req.body.parentTagIds);
+    const childTagIdsSource = req.body.childTagIds || [];
+    const childTagIds = Array.isArray(childTagIdsSource) ? childTagIdsSource : [childTagIdsSource];
 
-    if (thisId.length) {
-      childhTagIds.push(thisId);
-    }
+    const childFileIdsSource = req.body.childFileIds || [];
+    const childFileIds = Array.isArray(childFileIdsSource) ? childFileIdsSource : [childFileIdsSource];
+
+    const childFolderIdsSource = req.body.childFolderIds || [];
+    const childFolderIds = Array.isArray(childFolderIdsSource) ? childFolderIdsSource : [childFolderIdsSource];
+
+    const parentTagIdsSource = req.body.parentTagIds || [];
+    const parentTagIds = Array.isArray(parentTagIdsSource) ? parentTagIdsSource : [parentTagIdsSource];
 
     parentTagIds.forEach(async parentTagId => {
-      childhTagIds.forEach(async childTagId => {
+      childTagIds.forEach(async childTagId => {
         if (childTagId) {
           await asyncTagModel.addTagRelation(parentTagId, childTagId);
         }
