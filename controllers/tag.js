@@ -136,19 +136,13 @@ const tagController = {
 
     parentTagIds.forEach(async parentTagId => {
       childTagIds.forEach(async childTagId => {
-        if (childTagId) {
-          await asyncTagModel.addTagRelation(parentTagId, childTagId);
-        }
+        await asyncTagModel.addTagRelation(parentTagId, childTagId);
       });
       childFileIds.forEach(async childFileId => {
-        if (childFileId) {
-          await asyncTagModel.addFileRelation(parentTagId, childFileId);
-        }
+        await asyncTagModel.addFileRelation(parentTagId, childFileId);
       });
       childFolderIds.forEach(async childFolderId => {
-        if (childFolderId) {
-          await asyncTagModel.addFolderRelation(parentTagId, childFolderId);
-        }
+        await asyncTagModel.addFolderRelation(parentTagId, childFolderId);
       });
     });
 
