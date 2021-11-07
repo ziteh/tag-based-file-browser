@@ -4,7 +4,7 @@
 
       <% items.forEach(function(item){ %>
         <li>
-          <input type="checkbox" name="childTagIds" value="<%= item.id %>"/>
+          <input type="checkbox" name="parentTagIds" value="<%= item.id %>"/>
           <%= item.name %>
 
           <% if (item.child) { %>

@@ -123,31 +123,30 @@ const tagController = {
     const id = req.body.id;
     const thisId = req.body.thisTagId || [];
 
-    const pParentTagIds = req.body.parentTagIds || [];
-    let parentTagIds = Array.isArray(pParentTagIds) ? pParentTagIds : [pParentTagIds];
-
-    const pParentFileIds = req.body.parentFileIds || [];
-    const parentFileIds = Array.isArray(pParentFileIds) ? pParentFileIds : [pParentFileIds];
-
-    const pParentFolderIds = req.body.parentFolderIds || [];
-    const parentFolderIds = Array.isArray(pParentFolderIds) ? pParentFolderIds : [pParentFolderIds];
-
-    const pChildTagIds = req.body.childTagIds || [];
-    const childTagIds = Array.isArray(pChildTagIds) ? pChildTagIds : [pChildTagIds];
+    let childhTagIds = Array.of(req.body.childTagIds);
+    const childFileIds = Array.of(req.body.childFileIds);
+    const childFolderIds = Array.of(req.body.childFolderIds);
+    const parentTagIds = Array.of(req.body.parentTagIds);
 
     if (thisId.length) {
-      parentTagIds.push(thisId);
+      childhTagIds.push(thisId);
     }
 
-    childTagIds.forEach(async childTagId => {
-      parentTagIds.forEach(async parentTagId => {
-        await asyncTagModel.addTagRelation(parentTagId, childTagId);
+    parentTagIds.forEach(async parentTagId => {
+      childhTagIds.forEach(async childTagId => {
+        if (childTagId) {
+          await asyncTagModel.addTagRelation(parentTagId, childTagId);
+        }
       });
-      parentFileIds.forEach(async parentFileId => {
-        await asyncTagModel.addFileRelation(parentFileId, childTagId);
+      childFileIds.forEach(async childFileId => {
+        if (childFileId) {
+          await asyncTagModel.addFileRelation(parentTagId, childFileId);
+        }
       });
-      parentFolderIds.forEach(async parentFolderId => {
-        await asyncTagModel.addFolderRelation(parentFolderId, childTagId);
+      childFolderIds.forEach(async childFolderId => {
+        if (childFolderId) {
+          await asyncTagModel.addFolderRelation(parentTagId, childFolderId);
+        }
       });
     });
 

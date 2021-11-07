@@ -6,7 +6,7 @@
   <ul>
     <% childTags.forEach(function(childTag){ %>
       <li>
-        <input type="checkbox" name="parentTagIds" value="<%= childTag.id %>" />
+        <input type="checkbox" name="childTagIds" value="<%= childTag.id %>" />
         <%= childTag.name %>
       </li>
       <% }) %>
@@ -16,7 +16,7 @@
   <ul>
     <% childFiles.forEach(function(childFile){ %>
       <li>
-        <input type="checkbox" name="parentFileIds" value="<%= childFile.id %>" />
+        <input type="checkbox" name="childFileIds" value="<%= childFile.id %>" />
         <a href="<%= childFile.path %>">
         <%= childFile.name %>
         </a>
@@ -28,7 +28,7 @@
   <ul>
     <% childFolders.forEach(function(childFolder){ %>
       <li>
-        <input type="checkbox" name="parentFolderIds" value="<%= childFolder.id %>" />
+        <input type="checkbox" name="childFolderIds" value="<%= childFolder.id %>" />
         <%= childFolder.name %>
       </li>
       <% }) %>
