@@ -6,7 +6,7 @@ const express = require('express');
 const app = express();
 const db = require('./db');
 const tagController = require('./controllers/tag');
-const config = require('./config') || null;
+const config = require('./config');
 
 // Middleware
 app.use(express.urlencoded({ extender: true }));
