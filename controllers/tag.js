@@ -67,7 +67,7 @@ const tagController = {
       res.render('index', {
         page: 'item',
         tags: parsedTags,
-        thisTag,
+        thisTag: thisTag[0],
         id,
         childTags,
         childFiles,

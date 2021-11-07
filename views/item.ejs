@@ -1,43 +1,44 @@
 <form action="/addTagRes" method="post">
 
-  <input type="checkbox" name="childTagIds" value="<%= id %>" /><%= thisTag.name %> （Self）<br />
+  <input type="checkbox" name="childTagIds" value="<%= thisTag.id %>" />
+  <%= thisTag.name %> （Self）<br />
 
-  <p>Child Tags</p>
-  <ul>
-    <% childTags.forEach(function(childTag){ %>
-      <li>
-        <input type="checkbox" name="childTagIds" value="<%= childTag.id %>" />
-        <%= childTag.name %>
-      </li>
-      <% }) %>
-  </ul>
+    <p>Child Tags</p>
+    <ul>
+      <% childTags.forEach(function(childTag){ %>
+        <li>
+          <input type="checkbox" name="childTagIds" value="<%= childTag.id %>" />
+          <%= childTag.name %>
+        </li>
+        <% }) %>
+    </ul>
 
-  <p>Child Files</p>
-  <ul>
-    <% childFiles.forEach(function(childFile){ %>
-      <li>
-        <input type="checkbox" name="childFileIds" value="<%= childFile.id %>" />
-        <a href="<%= childFile.path %>">
-        <%= childFile.name %>
-        </a>
-      </li>
-      <% }) %>
-  </ul>
+    <p>Child Files</p>
+    <ul>
+      <% childFiles.forEach(function(childFile){ %>
+        <li>
+          <input type="checkbox" name="childFileIds" value="<%= childFile.id %>" />
+          <a href="<%= childFile.path %>">
+            <%= childFile.name %>
+          </a>
+        </li>
+        <% }) %>
+    </ul>
 
-  <p>Child Folders</p>
-  <ul>
-    <% childFolders.forEach(function(childFolder){ %>
-      <li>
-        <input type="checkbox" name="childFolderIds" value="<%= childFolder.id %>" />
-        <%= childFolder.name %>
-      </li>
-      <% }) %>
-  </ul>
+    <p>Child Folders</p>
+    <ul>
+      <% childFolders.forEach(function(childFolder){ %>
+        <li>
+          <input type="checkbox" name="childFolderIds" value="<%= childFolder.id %>" />
+          <%= childFolder.name %>
+        </li>
+        <% }) %>
+    </ul>
 
-  <hr />
+    <hr />
 
-  <%- include('treeviewWithCheckbox', {items: tags}); %>
+    <%- include('treeviewWithCheckbox', {items: tags}); %>
 
-    <input type="hidden" name="id" value="<%= id %> " />
-    <button>送出</button>
+      <input type="hidden" name="id" value="<%= thisTag.id %> " />
+      <button>送出</button>
 </form>
