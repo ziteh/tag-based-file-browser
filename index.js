@@ -6,11 +6,13 @@ const express = require('express');
 const app = express();
 const db = require('./db');
 const tagController = require('./controllers/tag');
+const config = require('./config') || null;
 
 // Middleware
 app.use(express.urlencoded({ extender: true }));
 
 app.use(express.static('public'));
+app.use('/filesystem',express.static('//192.168.15.100/NormalData'));
 
 app.set('view engine', 'ejs');
 
