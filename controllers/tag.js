@@ -58,6 +58,7 @@ const tagController = {
     const id = req.params.id
     try {
       const allTags = await asyncTagModel.getAll();
+      const thisTag = await asyncTagModel.get(id);
       const parsedTags = await parseTags(allTags);
       const childTags = await asyncTagModel.getChildTags(id);
       const childFiles = await asyncTagModel.getChildFiles(id);
@@ -66,6 +67,7 @@ const tagController = {
       res.render('index', {
         page: 'item',
         tags: parsedTags,
+        thisTag,
         id,
         childTags,
         childFiles,
@@ -119,17 +121,23 @@ const tagController = {
 
   addTagsRes: async (req, res) => {
     const id = req.body.id;
-    const thisId = req.body.thisTagId[0] || [];
-    let parentTagIds = Array.from(req.body.parentTagIds || []);
-    const parentFileIds = Array.from(req.body.parentFileIds || []);
-    const parentFolderIds = Array.from(req.body.parentFolderIds || []);
-    const childTagIds = Array.from(req.body.childTagIds || []);
+    const thisId = req.body.thisTagId || [];
+
+    const pParentTagIds = req.body.parentTagIds || [];
+    let parentTagIds = Array.isArray(pParentTagIds) ? pParentTagIds : [pParentTagIds];
+
+    const pParentFileIds = req.body.parentFileIds || [];
+    const parentFileIds = Array.isArray(pParentFileIds) ? pParentFileIds : [pParentFileIds];
+
+    const pParentFolderIds = req.body.parentFolderIds || [];
+    const parentFolderIds = Array.isArray(pParentFolderIds) ? pParentFolderIds : [pParentFolderIds];
+
+    const pChildTagIds = req.body.childTagIds || [];
+    const childTagIds = Array.isArray(pChildTagIds) ? pChildTagIds : [pChildTagIds];
 
     if (thisId.length) {
       parentTagIds.push(thisId);
     }
-
-    console.log(childTagIds);
 
     childTagIds.forEach(async childTagId => {
       parentTagIds.forEach(async parentTagId => {

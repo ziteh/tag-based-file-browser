@@ -27,6 +27,6 @@ app.get('/tags', tagController.getAll);
 app.get('/tags/:id', tagController.get);
 
 app.listen(port, () => {
-  db.connect()
-  console.log(`Example app listening at http://localhost:${port}`)
+  db.connect();
+  console.log(`Example app listening at http://localhost:${port}`);
 });
