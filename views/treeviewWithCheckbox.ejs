@@ -7,10 +7,10 @@
 
   <% items.forEach(function(item){ %>
     <li>
-      <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+      <div class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
         data-bs-target="#ctreeview<%= item.id %><%= i %>-collapse" aria-expanded="true">
         +
-      </button>
+    </div>
 
       <input type="checkbox" name="parentTagIds" value="<%= item.id %>" />
       <%= item.name %>
