@@ -1,18 +1,29 @@
+
+<% let i=0; %>
+
 <% if (items.length) { %>
-  <ul>
-    <% } %>
+<ul>
+<% } %>
 
-      <% items.forEach(function(item){ %>
-        <li>
-          <input type="checkbox" name="parentTagIds" value="<%= item.id %>"/>
-          <%= item.name %>
+  <% items.forEach(function(item){ %>
+    <li>
+      <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+        data-bs-target="#ctreeview<%= item.id %><%= i %>-collapse" aria-expanded="true">
+        +
+      </button>
 
-          <% if (item.child) { %>
-            <%- include('treeviewWithCheckbox', {items: item.child}); %>
-              <% } %>
-        </li>
-        <% }) %>
+      <input type="checkbox" name="parentTagIds" value="<%= item.id %>" />
+      <%= item.name %>
 
-          <% if (items.length) { %>
-  </ul>
-  <% } %>
+      <div class="collapse show" id="ctreeview<%= item.id %><%= i %>-collapse">
+        <% if (item.child) { %>
+          <%- include('treeviewWithCheckbox', {items: item.child}); %>
+        <% } %>
+      </div>
+    </li>
+    <% i++ %>
+  <% }) %>
+
+<% if (items.length) { %>
+</ul>
+<% } %>
