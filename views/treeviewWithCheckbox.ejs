@@ -12,14 +12,14 @@
         +
     </div>
 
-      <input type="checkbox" name="parentTagIds" value="<%= item.id %>" />
+    <input type="checkbox" name="parentTagIds" value="<%= item.id %>" />
       <%= item.name %>
 
-      <div class="collapse show" id="ctreeview<%= item.id %><%= i %>-collapse">
-        <% if (item.child) { %>
-          <%- include('treeviewWithCheckbox', {items: item.child}); %>
-        <% } %>
-      </div>
+    <div class="collapse show" id="ctreeview<%= item.id %><%= i %>-collapse">
+      <% if (item.child) { %>
+        <%- include('treeviewWithCheckbox', {items: item.child}); %>
+      <% } %>
+    </div>
     </li>
     <% i++ %>
   <% }) %>
