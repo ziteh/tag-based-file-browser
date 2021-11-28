@@ -14,7 +14,7 @@
     "url": "https://github.com/ziteh/tag-based-file-browser"
   },
   "scripts": {
-    "start": "node index.js"
+    "start": "nodemon index.js"
   },
   "dependencies": {
     "ejs": "^3.1.6",
